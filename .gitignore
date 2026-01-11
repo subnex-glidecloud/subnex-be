@@ -1,0 +1,83 @@
+# ===== OS files =====
+.DS_Store
+Thumbs.db
+
+# ===== IDE / Editor =====
+# IntelliJ / Android Studio
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Eclipse
+.project
+.classpath
+.settings/
+
+# VS Code
+.vscode/
+
+# Vim / Emacs
+*~
+*.swp
+*.swo
+
+# ===== Java / Build outputs =====
+# Gradle caches (per project and per module)
+.gradle/
+**/.gradle/
+
+# Gradle build dirs in every service/module
+build/
+**/build/
+
+# Maven (if any module uses it)
+target/
+
+# Other common output dirs
+out/
+bin/
+
+# Keep Gradle wrapper scripts and jar checked in
+!gradlew
+!gradlew.bat
+!gradle/wrapper/gradle-wrapper.jar
+
+# ===== Logs / Temp =====
+logs/
+**/logs/
+*.log
+*.tmp
+*.temp
+
+# Test reports and temporary build files
+**/build/reports/
+**/build/test-results/
+**/build/tmp/
+
+# ===== Spring / Config variants =====
+# Local-only overrides
+application-local.yml
+**/application-local.yml
+application-local.properties
+**/application-local.properties
+
+# ===== Env & Secrets =====
+.env
+.env.*
+*.env
+*.local
+*.secret
+*.pem
+*.key
+*.jks
+*.p12
+*.keystore
+
+# ===== Docker / Compose (local-only) =====
+docker-compose.override.yml
+.env.docker
+
+# ===== Misc =====
+*.orig
+*.rej

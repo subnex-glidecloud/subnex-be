@@ -1,0 +1,24 @@
+server:
+  port: ${PORT:8082}
+
+spring:
+  data:
+    mongodb:
+      uri: ${MONGODB_URI}
+      database: ${MONGODB_DB:subscription_db}
+
+# Swagger/OpenAPI Configuration
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
+    config-url: /api-docs/swagger-config
+    url: /api-docs
+    operations-sorter: alpha
+    tags-sorter: alpha
+
+logging:
+  level:
+    org.springframework.data.mongodb.core.MongoTemplate: DEBUG
