@@ -1,15 +1,10 @@
-package com.subnex.dev.controller;
+package com.subnex.auth.controller;
 
-import com.subnex.auth.service.AuthService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-@GetMapping("/")
 @RestController
-
+@RequestMapping("/")
 public class DevConroller {
-
-    private final AuthService authService;
 
     @GetMapping("/")
     public String welcome() {
