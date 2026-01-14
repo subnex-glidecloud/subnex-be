@@ -1,0 +1,11 @@
+server:
+  port: ${PORT:8083}
+
+spring:
+  data:
+    mongodb:
+      uri: ${MONGODB_URI}
+
+jwt:
+  secret: ${JWT_SECRET:subnex-secret-key-adharbattulwar-1477885697}
+  expiration: 3600000 # 1 hour
