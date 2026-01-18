@@ -1,0 +1,179 @@
+version: "3.8"
+
+services:
+  # Zookeeper - Required for Kafka
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.5.0
+    container_name: zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2181"
+    networks:
+      - subscription-network
+    healthcheck:
+      test: ["CMD", "echo", "ruok", "|", "nc", "localhost", "2181"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Kafka Message Broker
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    container_name: kafka
+    depends_on:
+      zookeeper:
+        condition: service_healthy
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:29092,PLAINTEXT_HOST://0.0.0.0:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+    ports:
+      - "9092:9092"
+      - "29092:29092"
+    networks:
+      - subscription-network
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "kafka-topics",
+          "--list",
+          "--bootstrap-server",
+          "localhost:9092",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # MongoDB - Database for microservices
+  # mongodb:
+  #   image: mongo:7.0
+  #   container_name: mongodb
+  #   environment:
+  #     MONGO_INITDB_ROOT_USERNAME: admin
+  #     MONGO_INITDB_ROOT_PASSWORD: password
+  #     MONGO_INITDB_DATABASE: subscription_db
+  #   ports:
+  #     - "27017:27017"
+  #   volumes:
+  #     - mongodb_data:/data/db
+  #   networks:
+  #     - subscription-network
+  #   healthcheck:
+  #     test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
+
+  # Auth Service (Port 8083)
+  auth-service:
+    build:
+      context: ./auth-service
+      dockerfile: Dockerfile
+    container_name: auth-service
+    ports:
+      - "8083:8083"
+    environment:
+      PORT: ${AUTH_SERVICE_PORT:-8083}
+      MONGODB_URI: ${AUTH_MONGODB_URI}
+      JWT_SECRET: ${JWT_SECRET}
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+    depends_on:
+      kafka:
+        condition: service_healthy
+      # mongodb:
+      #   condition: service_healthy
+    networks:
+      - subscription-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8083/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Email Service (Port 8084)
+  email-service:
+    build:
+      context: ./email-service
+      dockerfile: Dockerfile
+    container_name: email-service
+    ports:
+      - "8084:8084"
+    environment:
+      PORT: 8084
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+      MAILERSEND_API_KEY: ${MAILERSEND_API_KEY}
+      DEFAULT_FROM_EMAIL: ${DEFAULT_FROM_EMAIL}
+      DEFAULT_FROM_NAME: ${DEFAULT_FROM_NAME}
+    depends_on:
+      kafka:
+        condition: service_healthy
+    networks:
+      - subscription-network
+    restart: unless-stopped
+
+  # Subscription Service (Port 8080)
+  subscription-service:
+    build:
+      context: ./subscription-service
+      dockerfile: Dockerfile
+    container_name: subscription-service
+    ports:
+      - "8082:8082"
+    environment:
+      PORT: ${SUBSCRIPTION_SERVICE_PORT:-8082}
+      MONGODB_URI: ${SUBSCRIPTION_MONGODB_URI}
+      JWT_SECRET: ${JWT_SECRET:-subnex-secret-key-adharbattulwar-1477885697}
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+    depends_on:
+      kafka:
+        condition: service_healthy
+      # mongodb:
+      #   condition: service_healthy
+    networks:
+      - subscription-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Payment Service (Port 8085)
+  # payment-service:
+  #   build:
+  #     context: ./payment-service
+  #     dockerfile: Dockerfile
+  #   container_name: payment-service
+  #   ports:
+  #     - "8085:8085"
+  #   environment:
+  #     PORT: 8085
+  #     MONGODB_URI: mongodb://admin:password@mongodb:27017/payment_db?authSource=admin
+  #     JWT_SECRET: ${JWT_SECRET:-subnex-secret-key-adharbattulwar-1477885697}
+  #     SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+  #   depends_on:
+  #     kafka:
+  #       condition: service_healthy
+  #     mongodb:
+  #       condition: service_healthy
+  #   networks:
+  #     - subscription-network
+  #   restart: unless-stopped
+  #   profiles:
+  #     - payment
+
+networks:
+  subscription-network:
+    driver: bridge
+# volumes:
+#   mongodb_data:
+#     driver: local
