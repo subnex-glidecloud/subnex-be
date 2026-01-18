@@ -27,6 +27,9 @@ dependencies {
     // Environment variables support
     implementation 'io.github.cdimascio:dotenv-java:3.0.0'
 
+    // Jackson support for Java 8 date/time types
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 

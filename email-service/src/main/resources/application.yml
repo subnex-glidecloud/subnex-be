@@ -8,12 +8,8 @@ spring:
       group-id: email-service-group
       auto-offset-reset: latest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
-      properties:
-        spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
-        spring.json.value.default.type: com.subnex.email.dto.LoginEvent
-        spring.json.trusted.packages: com.subnex.email.dto,com.subnex.auth.dto,java.util,java.lang
-        spring.json.use.type.headers: false
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      # spring.json.trusted.packages: com.subnex.email.dto,com.subnex.auth.dto,com.subnex.payment.dto,java.util,java.lang/
 
 mailersend:
   api-key: ${MAILERSEND_API_KEY}
