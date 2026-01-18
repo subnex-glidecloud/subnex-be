@@ -1,0 +1,29 @@
+server:
+  port: ${SERVER_PORT:8085}
+
+spring:
+  application:
+    name: payment-service
+  data:
+    mongodb:
+      uri: ${MONGODB_URI}
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+payment:
+  success-rate: ${PAYMENT_SUCCESS_RATE:0.8}
+  stripe:
+    secret-key: ${STRIPE_SECRET_KEY}
+    webhook-secret: ${STRIPE_WEBHOOK_SECRET}
+
+    
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
+    operations-sorter: method
+  api-docs:
+    path: /v3/api-docs
