@@ -26,6 +26,15 @@ dependencies {
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
     implementation 'com.google.code.gson:gson:2.10.1'
     implementation 'com.stripe:stripe-java:24.14.0'
+    // Spring Boot Actuator
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+    // Micrometer Prometheus registry
+    implementation 'io.micrometer:micrometer-registry-prometheus'
+
+    // Optional but recommended (metrics for web, JVM, etc.)
+    implementation 'io.micrometer:micrometer-core'
+
 
     annotationProcessor 'org.projectlombok:lombok'
 

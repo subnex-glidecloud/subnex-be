@@ -24,6 +24,14 @@ dependencies {
     
     // Swagger/OpenAPI
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0'
+    // Spring Boot Actuator
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+    // Micrometer Prometheus registry
+    implementation 'io.micrometer:micrometer-registry-prometheus'
+
+    // Optional but recommended (metrics for web, JVM, etc.)
+    implementation 'io.micrometer:micrometer-core'
     
     // Environment variables support
     implementation 'io.github.cdimascio:dotenv-java:3.0.0'

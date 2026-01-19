@@ -7,6 +7,20 @@ spring:
       uri: ${MONGODB_URI}
       database: ${MONGODB_DB:subscription_db}
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  endpoint:
+    prometheus:
+      enabled: true
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+
+
 # Swagger/OpenAPI Configuration
 springdoc:
   api-docs:

@@ -17,6 +17,20 @@ stripe:
   api-key: ${STRIPE_API_KEY:${STRIPE_SECRET_KEY:}}
   webhook-secret: ${STRIPE_WEBHOOK_SECRET:}
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  endpoint:
+    prometheus:
+      enabled: true
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+
+
 springdoc:
   swagger-ui:
     path: /swagger-ui.html

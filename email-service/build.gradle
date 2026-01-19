@@ -30,6 +30,16 @@ dependencies {
 
     // Jackson support for Java 8 date/time types
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+    
+    // Spring Boot Actuator
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+    // Micrometer Prometheus registry
+    implementation 'io.micrometer:micrometer-registry-prometheus'
+
+    // Optional but recommended (metrics for web, JVM, etc.)
+    implementation 'io.micrometer:micrometer-core'
+
 
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'

@@ -11,6 +11,20 @@ spring:
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       # spring.json.trusted.packages: com.subnex.email.dto,com.subnex.auth.dto,com.subnex.payment.dto,java.util,java.lang/
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  endpoint:
+    prometheus:
+      enabled: true
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+
+
 mailersend:
   api-key: ${MAILERSEND_API_KEY}
   from-email: ${DEFAULT_FROM_EMAIL}
