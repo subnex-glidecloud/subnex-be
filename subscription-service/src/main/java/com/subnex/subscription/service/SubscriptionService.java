@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -48,5 +49,9 @@ public class SubscriptionService {
 
         subscription.setStatus("CANCELLED");
         return subscriptionRepository.save(subscription);
+    }
+
+    public List<Subscription> getSubscriptionsByUserId(String userId) {
+        return subscriptionRepository.findByUserId(userId);
     }
 }

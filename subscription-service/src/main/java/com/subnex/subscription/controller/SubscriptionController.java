@@ -6,6 +6,8 @@ import com.subnex.subscription.service.SubscriptionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/subscriptions")
 @RequiredArgsConstructor
@@ -26,5 +28,10 @@ public class SubscriptionController {
     @DeleteMapping("/{id}")
     public Subscription cancel(@PathVariable String id) {
         return subscriptionService.cancelSubscription(id);
+    }
+
+    @GetMapping("/user/{userId}")
+    public List<Subscription> getUserSubscriptions(@PathVariable String userId) {
+        return subscriptionService.getSubscriptionsByUserId(userId);
     }
 }
