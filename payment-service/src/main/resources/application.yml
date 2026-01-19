@@ -13,13 +13,10 @@ spring:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
 
-payment:
-  success-rate: ${PAYMENT_SUCCESS_RATE:0.8}
-  stripe:
-    secret-key: ${STRIPE_SECRET_KEY}
-    webhook-secret: ${STRIPE_WEBHOOK_SECRET}
+stripe:
+  api-key: ${STRIPE_API_KEY:${STRIPE_SECRET_KEY:}}
+  webhook-secret: ${STRIPE_WEBHOOK_SECRET:}
 
-    
 springdoc:
   swagger-ui:
     path: /swagger-ui.html

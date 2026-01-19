@@ -18,6 +18,7 @@ public class PaymentResponse {
     private String subscriptionId;
     private String userId;
     private String userEmail;
+    private String stripePaymentIntentId;
     private Long amount;
     private String currency;
     private PaymentStatus status;
