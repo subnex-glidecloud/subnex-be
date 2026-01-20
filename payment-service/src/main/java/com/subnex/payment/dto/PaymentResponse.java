@@ -19,6 +19,7 @@ public class PaymentResponse {
     private String userId;
     private String userEmail;
     private String stripePaymentIntentId;
+    private String clientSecret;
     private Long amount;
     private String currency;
     private PaymentStatus status;

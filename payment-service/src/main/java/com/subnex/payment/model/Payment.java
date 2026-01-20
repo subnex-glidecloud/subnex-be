@@ -25,6 +25,7 @@ public class Payment {
     private String userId;
     private String userEmail; // Email for notifications
     private String stripePaymentIntentId;
+    private String clientSecret;
     private Long amount;
     private String currency;
     private PaymentStatus status;

@@ -40,6 +40,6 @@ public class AuthService {
 
         kafkaProducerService.publishLoginEvent(user.getId(), user.getEmail());
 
-        return jwtUtil.generateToken(user.getId(), user.getRole());
+        return jwtUtil.generateToken(user.getId(), user.getEmail(), user.getRole());
     }
 }

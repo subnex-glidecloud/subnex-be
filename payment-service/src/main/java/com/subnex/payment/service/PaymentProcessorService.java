@@ -37,7 +37,7 @@ public class PaymentProcessorService {
                 request.getUserEmail()
             );
 
-            // Create payment record with Stripe intent ID
+            // Create payment record with Stripe intent ID and client secret
             Payment payment = Payment.builder()
                 .subscriptionId(request.getSubscriptionId())
                 .userId(request.getUserId())
@@ -48,6 +48,7 @@ public class PaymentProcessorService {
                 .type(request.getType())
                 .attempt(1)
                 .stripePaymentIntentId(paymentIntent.getId())
+                .clientSecret(paymentIntent.getClientSecret())
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
                 .build();
@@ -135,6 +136,7 @@ public class PaymentProcessorService {
             .userId(payment.getUserId())
             .userEmail(payment.getUserEmail())
             .stripePaymentIntentId(payment.getStripePaymentIntentId())
+            .clientSecret(payment.getClientSecret())
             .amount(payment.getAmount())
             .currency(payment.getCurrency())
             .status(payment.getStatus())
