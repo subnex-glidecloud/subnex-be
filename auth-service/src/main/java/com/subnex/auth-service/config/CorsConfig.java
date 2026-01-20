@@ -17,16 +17,23 @@ public class CorsConfig {
         
         // Frontend origins
         configuration.setAllowedOrigins(Arrays.asList(
-            "http://localhost:8080",
+            // Local dev apps (Vite/Next)
             "http://localhost:3000",
+            "http://127.0.0.1:3000",
+            "http://localhost:5173",
+            "http://localhost:5174",
+            "http://127.0.0.1:5173",
+            "http://127.0.0.1:5174",
+            // Hosted frontends
             "https://subnex.vercel.app",
             "https://subnex.adharbattulwar.com",
+            // Public API domain (if browser calls directly)
             "https://subnex-api.adharbattulwar.com",
             // Microservice origins for internal communication
-            "http://localhost:8082",  // subscription-service
-            "http://localhost:8083",  // auth-service
-            "http://localhost:8084",  // email-service
-            "http://localhost:8085"   // payment-service
+            "http://localhost:8082",
+            "http://localhost:8083",
+            "http://localhost:8084",
+            "http://localhost:8085"
         ));
         
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
